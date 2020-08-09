@@ -15,12 +15,12 @@ const c = @cImport({
 const Map = bpf.Map;
 const PerfEventArray = bpf.PerfEventArray;
 
+export var config: Config = undefined;
+
 export const start linksection(".maps") = Map(u32, Args, .hash, 10240).init();
 export const events linksection(".maps") = PerfEventArray.init();
 
 // static variables linked at loadtime
-var config = Config{};
-
 const SyscallEnterArgs = struct {
     unused: u64,
     syscall_nr: usize,
@@ -35,7 +35,7 @@ const SyscallExitArgs = struct {
     ret: isize,
 };
 
-fn trace_enter(ctx: *SyscallEnterArgs) !void {
+inline fn trace_enter(ctx: *SyscallEnterArgs) !void {
     const id = bpf.get_current_pid_tgid();
     const tgid = @truncate(u32, id >> 32);
     const pid = @truncate(u32, id);
@@ -50,7 +50,7 @@ fn trace_enter(ctx: *SyscallEnterArgs) !void {
     try start.update(.any, &pid, &args);
 }
 
-fn trace_exit(ctx: *SyscallExitArgs) !void {
+inline fn trace_exit(ctx: *SyscallExitArgs) !void {
     const id = bpf.get_current_pid_tgid();
     const pid = @truncate(u32, id >> 32);
     defer start.delete(&pid) catch {};

@@ -19,6 +19,7 @@ pub fn build(b: *Builder) !void {
     obj.addPackage(bpf);
     obj.addIncludeDir("/usr/include");
 
+    b.setPreferredReleaseMode(.ReleaseFast);
     const target = b.standardTargetOptions(.{});
     const mode = b.standardReleaseOptions();
     const exe = b.addExecutable("opensnoop-fast", "src/main.zig");
@@ -37,4 +38,10 @@ pub fn build(b: *Builder) !void {
 
     const run_step = b.step("run", "Run the app");
     run_step.dependOn(&run_cmd.step);
+
+    const tests = b.addTest("src/main.zig");
+    tests.step.dependOn(&obj.step);
+
+    const test_step = b.step("test", "Run all tests");
+    test_step.dependOn(&tests.step);
 }

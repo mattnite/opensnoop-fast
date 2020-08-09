@@ -30,13 +30,13 @@ pub const Event = struct {
 };
 
 pub const PidTidTag = enum {
-    Pid,
-    Tid,
+    pid,
+    tid,
 };
 
 pub const PidTidFilter = union(PidTidTag) {
-    Pid: u32,
-    Tid: u32,
+    pid: u32,
+    tid: u32,
 };
 
 pub const Config = struct {
@@ -50,8 +50,8 @@ pub const Config = struct {
     pub fn filter(self: *const Self, pid: u32, tid: u32, uid: u32) !void {
         if (self.pid_tid) |tag| {
             switch (tag) {
-                .Pid => |p| if (p != pid) return error.Filter,
-                .Tid => |t| if (t != tid) return error.Filter,
+                .pid => |p| if (p != pid) return error.Filter,
+                .tid => |t| if (t != tid) return error.Filter,
             }
         }
 
