@@ -72,7 +72,7 @@ inline fn trace_exit(ctx: *SyscallExitArgs) !void {
 
     try bpf.get_current_comm(&event.comm);
     try bpf.probe_read_user_str(&event.fname, args.fname);
-    try bpf.perf_event_output(ctx, &events.base, .current_cpu, std.mem.asBytes(&event));
+    try bpf.perf_event_output(ctx, &events.def, .current_cpu, std.mem.asBytes(&event));
 }
 
 export fn enter_open(ctx: *SyscallEnterArgs) linksection("tracepoint/syscalls/sys_enter_open") c_int {

@@ -35,8 +35,8 @@ pub const PidTidTag = enum {
 };
 
 pub const PidTidFilter = union(PidTidTag) {
-    pid: u32,
-    tid: u32,
+    pid: i32,
+    tid: i32,
 };
 
 pub const Config = struct {

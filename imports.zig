@@ -1,8 +1,8 @@
 const zkg = @import("zkg");
 
 pub const clap = zkg.import.git(
-    "https://github.com/Hejsil/zig-clap.git",
-    "zig-master",
+    "https://github.com/mattnite/zig-clap.git",
+    "anytype",
     "clap.zig",
 );
 
